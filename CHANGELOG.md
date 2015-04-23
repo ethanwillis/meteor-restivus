@@ -1,5 +1,14 @@
 # Change Log
 
+## Unreleased
+
+#### Fixed
+- Issue #32:
+  - Prevent non-JSON response types from being wrapped in quotes
+  - This bug required clients to do additional parsing of non-JSON types 
+    (removing quotes and escaped characters)
+
+
 ## [v0.6.4] - 2015-04-14
 
 #### Added
