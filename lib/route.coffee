@@ -67,7 +67,8 @@ class @Route
         # Generate and return the http response, handling the different endpoint response types
         if responseData.body and (responseData.statusCode or responseData.headers)
           responseData.statusCode or= 200
-          responseData.headers or= {'Content-Type': 'text/json'}
+          # TODO: Figure out why I can't use 'Content-Type'
+          responseData.headers or= {'contenttype': 'text/json'}
           self._respond this, responseData.body, responseData.statusCode, responseData.headers
         else
           self._respond this, responseData
@@ -205,15 +206,22 @@ class @Route
 
     # Ensure that a content type is set (will be overridden if also included in given headers)
     # TODO: Consider enforcing a text/json-only content type (override any user-defined content-type)
-    # endpointContext.response.setHeader 'Content-Type', 'text/json'
+    if headers == undefined
+        headers = {'contenttype': 'text/json'}
+    endpointContext.response.setHeader 'Content-Type', headers.contenttype
+    
+    if headers.contenttype == 'text/json'
+        # Prettify JSON if configured in API
+        if @api.config.prettyJson
+           bodyAsJson = JSON.stringify body, undefined, 2
+        else
+           bodyAsJson = JSON.stringify body
 
-    # Prettify JSON if configured in API
-    if @api.config.prettyJson
-      bodyAsJson = JSON.stringify body, undefined, 2
+        # Send response
+        endpointContext.response.writeHead statusCode, headers
+        endpointContext.response.write bodyAsJson
+        endpointContext.response.end()
     else
-      bodyAsJson = JSON.stringify body
-
-    # Send response
-    endpointContext.response.writeHead statusCode, headers
-    endpointContext.response.write bodyAsJson
-    endpointContext.response.end()
+        endpointContext.response.writeHead statusCode, headers
+        endpointContext.response.write body
+        endpointContext.response.end()

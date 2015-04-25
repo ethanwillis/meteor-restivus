@@ -1,7 +1,7 @@
 Package.describe({
   name: 'sn3twork:restivus',
   summary: 'Create authenticated REST APIs in Meteor 0.9+. CRUD endpoints for Collections. Allows XML response',
-  version: '0.6.5',
+  version: '0.6.6',
 	git: 'https://github.com/sn3twork/meteor-restivus.git'
 });
 
