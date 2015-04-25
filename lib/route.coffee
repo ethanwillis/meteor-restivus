@@ -205,7 +205,7 @@ class @Route
 
     # Ensure that a content type is set (will be overridden if also included in given headers)
     # TODO: Consider enforcing a text/json-only content type (override any user-defined content-type)
-    endpointContext.response.setHeader 'Content-Type', 'text/json'
+    # endpointContext.response.setHeader 'Content-Type', 'text/json'
 
     # Prettify JSON if configured in API
     if @api.config.prettyJson
